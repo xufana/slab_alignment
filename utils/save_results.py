@@ -1,6 +1,6 @@
 import csv
 import pandas as pd
-from diversity import token_entropy
+from utils.diversity import token_entropy
 
 def save(version, texts, logits, tokenizer):
     path = './results/'

@@ -12,10 +12,9 @@ from src.make_dataset import prepate_prompts
 def main(mode: str,
          n: int,
          version: str,
-         description: str,
-         template_src: str = '../data/templates.json',
-         titles_src: str = '../data/titles.txt',
-         prompts_src: str | None = '../data/prompts.txt',
+         template_src: str = 'data/templates.json',
+         titles_src: str = 'data/titles.txt',
+         prompts_src: str | None = 'data/prompts.txt',
          gen_model: str = "lvwerra/gpt2-imdb",
          reward_model: str = "lvwerra/distilbert-imdb",
          loss_type: str = 'hinge') -> None:
@@ -41,10 +40,10 @@ def main(mode: str,
         prompts = prepate_prompts(n, template_src, titles_src)
         
         # check-point for prompts
-        with open('../data/prompts.txt', 'w') as f:
+        with open('data/prompts.txt', 'w') as f:
             f.write('\n'.join(prompts))
 
-        prompts_src = '../data/prompts.txt'
+        prompts_src = 'data/prompts.txt'
     else:
         with open(prompts_src, 'r') as f:
             prompts = f.read().split("\n")
@@ -53,7 +52,7 @@ def main(mode: str,
         train(prompts, loss_type, gen_model, reward_model)
     
     elif mode == 'inference':
-        inference(prompts, version, description, gen_model, reward_model)
+        inference(prompts, version, gen_model, reward_model)
 
     else:
         raise Exception('Wrong mode, use either train or inference!')

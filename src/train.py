@@ -4,7 +4,7 @@ from typing import List
 from trl import DPOTrainer
 
 
-from make_dataset import prepare_dataset
+from src.make_dataset import prepare_dataset
 
 
 def train(prompts: List[str],

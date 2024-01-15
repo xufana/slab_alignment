@@ -29,6 +29,8 @@ def inference(prompts: List[str],
     else:
         device = 'cpu'
 
+    print("Initializing models...")
+
     gen_tokenizer = transformers.AutoTokenizer.from_pretrained(gen_model_src, device_map=device)
     gen_model = transformers.AutoModelForCausalLM.from_pretrained(gen_model_src, device_map=device)
     if gen_tokenizer.pad_token is None:
@@ -37,7 +39,8 @@ def inference(prompts: List[str],
     reward_tokenizer = transformers.AutoTokenizer.from_pretrained(reward_model_src)
     reward_model = transformers.AutoModelForSequenceClassification.from_pretrained(reward_model_src,
                                                                                    device_map=device)
-
+    
+    print("Generating reviews...")
     input = gen_tokenizer(prompts,
                           return_tensors="pt",
                           padding=True).to(device)
@@ -49,6 +52,7 @@ def inference(prompts: List[str],
                                 num_return_sequences=2)
     generated_texts = []
 
+    print("Scoring generations...")
     for i in range(output.shape[0]):
         generated_text = gen_tokenizer.decode(output[i],
                                               skip_special_tokens=True)
@@ -60,4 +64,5 @@ def inference(prompts: List[str],
     with torch.no_grad():
         logits = reward_model(**input_rewards).logits
 
+    print("Saving the results...")
     save(version, generated_texts, logits, gen_tokenizer)
