@@ -37,11 +37,12 @@ def main(mode: str,
     # Generating data if there isn't any, reading it otherwise
 
     if not prompts_src:
+        print("Preparing Prompts")
         prompts = prepate_prompts(n, template_src, titles_src)
         
         # check-point for prompts
-        with open('data/prompts.txt', 'w') as f:
-            f.write('\n'.join(prompts))
+        #with open('data/prompts.txt', 'w') as f:
+        #    f.write('\n'.join(prompts))
 
         prompts_src = 'data/prompts.txt'
     else:
@@ -49,7 +50,7 @@ def main(mode: str,
             prompts = f.read().split("\n")
 
     if mode == 'train':
-        train(prompts, loss_type, gen_model, reward_model)
+        train(prompts, gen_model, reward_model, loss_type)
     
     elif mode == 'inference':
         inference(prompts, version, gen_model, reward_model)

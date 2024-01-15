@@ -2,7 +2,6 @@ model_hinge/
 model_sigmoid/
 venv/
 test/
-results/
 data/imdb_top_1000.csv
 __pycache__/
 .idea/

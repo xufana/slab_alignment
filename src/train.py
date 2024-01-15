@@ -1,3 +1,4 @@
+import os
 import torch
 import transformers
 from typing import List
@@ -72,7 +73,7 @@ def train(prompts: List[str],
     print("Training the model...")
     dpo_trainer = DPOTrainer(
         gen_model,
-        reward_model,
+        gen_model,
         args=training_args,
         beta=0.1,
         train_dataset=dataset,
@@ -83,6 +84,8 @@ def train(prompts: List[str],
     dpo_trainer.train()
 
     print("Saving the model...")
-    dpo_trainer.save_model(f"../models/model_{loss_type}")
+    if not os.path.exists('./models'):
+        os.makedirs('./models')
+    dpo_trainer.save_model(f"./models/model_{loss_type}")
 
     print("All done!")

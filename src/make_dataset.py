@@ -58,16 +58,13 @@ def prepare_dataset(prompts: List[str],
         Dataset: dataset generated via ranking
     """
 
-    """
-    len(texts) == len(logits) == len(prompts)*2
-    """
-    pairs_text = zip(texts[::2], texts[1::2])
-    pairs_logits = zip(logits[::2], logits[1::2])
+    pairs_text = list(zip(texts[::2], texts[1::2]))
+    pairs_logits = list(zip(logits[::2], logits[1::2]))
 
     dpo_data = {'prompt': [], 'chosen': [], 'rejected': []}
     for i in range(len(prompts)):
         dpo_data['prompt'].append(prompts[i])
-        if pairs_logits[i][0] > pairs_logits[i][1]:
+        if pairs_logits[i][0][1] > pairs_logits[i][1][1]:
             dpo_data['chosen'].append(pairs_text[i][0])
             dpo_data['rejected'].append(pairs_text[i][1])
         else:

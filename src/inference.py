@@ -1,3 +1,4 @@
+import os
 import sys
 sys.path.append('../')
 
@@ -65,4 +66,6 @@ def inference(prompts: List[str],
         logits = reward_model(**input_rewards).logits
 
     print("Saving the results...")
+    if not os.path.exists('./results'):
+        os.makedirs('./results')
     save(version, generated_texts, logits, gen_tokenizer)
